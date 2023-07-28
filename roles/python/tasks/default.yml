@@ -20,3 +20,14 @@
       apt:
         name: "python{{ python_version }}"
         state: present
+
+    - name: "[default] install venv"
+      apt:
+        name: "python{{ python_version }}-venv"
+        state: present
+
+- name: "[default] Python: Configure"
+  when: python_installed.rc != 0
+  block:
+    - name: "[default] install pip"
+      command: "python3.11 -m ensurepip --root /usr/local"
