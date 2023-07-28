@@ -2,6 +2,7 @@
 - name: "[default] Zsh: Check dependencies"
   block:
     - name: "[default] git pkg"
+      ignore_errors: yes
       command: "which git"
       register: git_installed
 

@@ -1,0 +1,22 @@
+---
+- name: "[default] Python: check"
+  ignore_errors: yes
+  command: "which python{{ python_version }}"
+  register: python_installed
+
+- name: "[default] Python: Install python, Ubuntu"
+  when: ansible_pkg_mgr == 'apt' and python_installed.rc != 0
+  block:
+    - name: "[default] ppa:deadsnakes"
+      apt_repository:
+        repo: "ppa:deadsnakes/ppa"
+        state: present
+
+    - name: "[default] update repo cache"
+      apt:
+        update_cache: yes
+
+    - name: "[default] install python {{ python_version }}"
+      apt:
+        name: "python{{ python_version }}"
+        state: present

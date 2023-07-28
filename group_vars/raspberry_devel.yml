@@ -13,6 +13,11 @@ neovim__type: "default"
 run_zsh_install: true
 zsh__type: "default"
 
+# python:
+run_python_install: true
+python_type: "default"
+python_version: 3.11
+
 # devel tools:
 run_devel_tools: true
 devel__type: "default"
