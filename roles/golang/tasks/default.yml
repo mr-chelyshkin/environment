@@ -1,5 +1,11 @@
 ---
+- name: "[default] GoLang: check"
+  stat:
+    path: "{{ golang_path }}/go{{ golang_version }}"
+  register: go_binary_dir
+
 - name: "[default] GoLang: Install golang"
+  when: not go_binary_dir.stat.exists
   block:
     - name: "[default] download"
       get_url:
