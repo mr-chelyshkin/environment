@@ -6,6 +6,7 @@
   roles:
     - { role: pkgs_upgrade, when: run_pkgs_upgrade }
     - { role: git,          when: run_git_tools }
+    - { role: golang,       when: run_golang_install }
     - { role: python,       when: run_python_install }
     - { role: neovim,       when: run_neovim_install }
     - { role: zsh,          when: run_zsh_install }

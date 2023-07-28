@@ -1,0 +1,4 @@
+---
+golang__type: "default"
+golang_version: "1.20.6"
+golang_aarch: "linux-arm64"
