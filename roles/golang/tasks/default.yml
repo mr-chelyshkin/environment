@@ -1,27 +1,23 @@
 ---
-- name: "[default] GoLang: check"
-  ignore_errors: yes
-  command: "which go"
-  register: golang_installed
-
-- name: "[default] GoLang: Install golang, Ubuntu"
-  when: ansible_pkg_mgr == 'apt' and golang_installed.rc != 0
+- name: "[default] GoLang: Install golang"
   block:
     - name: "[default] download"
       get_url:
         url: "https://dl.google.com/go/go{{ golang_version }}.{{ golang_aarch }}.tar.gz"
-        dest: "/usr/local/go{{ golang_version }}.tar.gz"
+        dest: "{{ golang_path }}/go{{ golang_version }}.tar.gz"
         mode: "0644"
         validate_certs: no
 
     - name: "[default] extract"
       unarchive:
-        src: "/usr/local/go{{ golang_version }}.tar.gz"
-        dest: "/usr/local"
+        src: "{{ golang_path }}/go{{ golang_version }}.tar.gz"
+        dest: "{{ golang_path }}"
         remote_src: yes
-        creates: "/usr/local/go{{ golang_version }}"
+
+    - name: "[default] prepare golang dir"
+      command: "mv {{ golang_path }}/go {{ golang_path }}/go{{ golang_version }}"
 
     - name: "[default] remove sources"
       file:
-        path: "/usr/local/go{{ golang_version }}.tar.gz"
+        path: "{{ golang_path }}/go{{ golang_version }}.tar.gz"
         state: absent
