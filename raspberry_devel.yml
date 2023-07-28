@@ -1,0 +1,10 @@
+---
+- name: "Update and upgrade packages"
+  hosts: raspberry_devel
+  become: true
+
+  roles:
+    - { role: pkgs_upgrade, when: run_pkgs_upgrade }
+    - { role: devel,        when: run_devel_tools }
+    - { role: neovim,       when: run_neovim_install }
+    - { role: zsh,          when: run_zsh_install }

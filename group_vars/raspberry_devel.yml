@@ -1,0 +1,18 @@
+---
+ansible_host: raspberrypi.local
+
+# upgrade config:
+run_pkgs_upgrade: true
+pkgs_upgrade__type: "default"
+
+# neovim:
+run_neovim_install: true
+neovim__type: "default"
+
+# zsh:
+run_zsh_install: true
+zsh__type: "default"
+
+# devel tools:
+run_devel_tools: true
+devel__type: "default"

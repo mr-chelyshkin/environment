@@ -1,0 +1,4 @@
+---
+- name: "devel__default"
+  include_tasks: "default.yml"
+  when: pkgs_upgrade__type == "default"
