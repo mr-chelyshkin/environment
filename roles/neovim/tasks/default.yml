@@ -1,21 +1,23 @@
 ---
-- name: "[default] Checking Neovim"
-  stat:
-    path: /usr/bin/nvim
-  register: neovim_bin
+- name: "[default] NeoVim: Install neovim"
+  block:
+    - name: "[default] checking neovim"
+      stat:
+        path: /usr/bin/nvim
+      register: neovim_bin
 
-- name: "[default] Install Neovim Ubuntu"
-  apt:
-    name: neovim
-    state: present
+    - name: "[default] install, Ubuntu"
+      apt:
+        name: neovim
+        state: present
 
-  when: ansible_pkg_mgr == 'apt' and neovim_bin.stat.exists == false
-  changed_when: false
+      when: ansible_pkg_mgr == 'apt' and neovim_bin.stat.exists == false
+      changed_when: false
 
-- name: "[default] Install Neovim CentOS/RHEL"
-  yum:
-    name: neovim
-    state: present
+    - name: "[default] install, CentOS/RHEL"
+      yum:
+        name: neovim
+        state: present
 
-  when: ansible_pkg_mgr == 'yum' and neovim_bin.stat.exists == false
-  changed_when: false
+      when: ansible_pkg_mgr == 'yum' and neovim_bin.stat.exists == false
+      changed_when: false

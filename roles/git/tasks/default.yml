@@ -1,0 +1,23 @@
+---
+- name: "[default] git: Install git"
+  block:
+    - name: "[default] checking git"
+      stat:
+        path: /usr/bin/git
+      register: git_binary
+
+    - name: "[default] install, Ubuntu"
+      apt:
+        name: git
+        state: present
+
+      when: ansible_pkg_mgr == 'apt' and git_binary.stat.exists == false
+      changed_when: false
+
+    - name: "[default] install, CentOS/RHEL"
+      yum:
+        name: git
+        state: present
+
+      when: ansible_pkg_mgr == 'yum' and git_binary.stat.exists == false
+      changed_when: false

@@ -16,3 +16,6 @@ zsh__type: "default"
 # devel tools:
 run_devel_tools: true
 devel__type: "default"
+
+# git:
+run_git_tools: true

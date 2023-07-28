@@ -1,2 +1,5 @@
 ---
 devel__type: "default"
+
+# default pkgs:
+default__use_python: 3.11

@@ -1,21 +1,15 @@
 ---
-- name: "[default] Devel pkg: checking git, Ubuntu"
-  stat:
-    path: /usr/bin/git
-  register: git_binary
+- name: "[default] Devel pkg: Configure PPAs, Ubuntu"
+  when: ansible_pkg_mgr == 'apt'
+  block:
+    - name: "[default] ppa:deadsnakes"
+      apt_repository:
+        repo: "ppa:deadsnakes/ppa"
+        state: present
 
-- name: "[default] Devel pkg: install git, Ubuntu"
-  apt:
-    name: git
-    state: present
+    # add common repos here ...
 
-  when: ansible_pkg_mgr == 'apt' and git_binary.stat.exists == false
-  changed_when: false
+    - name: "[default] update repo cache"
+      apt:
+        update_cache: yes
 
-- name: "[default] Devel pkg: git, CentOS/RHEL"
-  yum:
-    name: git
-    state: present
-
-  when: ansible_pkg_mgr == 'yum' and git_binary.stat.exists == false
-  changed_when: false

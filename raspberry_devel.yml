@@ -5,6 +5,6 @@
 
   roles:
     - { role: pkgs_upgrade, when: run_pkgs_upgrade }
-    - { role: devel,        when: run_devel_tools }
+    - { role: git,          when: run_git_tools }
     - { role: neovim,       when: run_neovim_install }
     - { role: zsh,          when: run_zsh_install }
