@@ -30,3 +30,6 @@ devel__type: "default"
 
 # git:
 run_git_tools: true
+
+# ssh_keys
+run_ssh_keys: true

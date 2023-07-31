@@ -1,0 +1,4 @@
+---
+- name: "ssh_keys__default"
+  include_tasks: "default.yml"
+  when: ssh_keys__type == "default"

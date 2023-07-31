@@ -9,4 +9,5 @@
     - { role: golang,       when: run_golang_install }
     - { role: python,       when: run_python_install }
     - { role: neovim,       when: run_neovim_install }
+    - { role: ssh_keys,     when: run_ssh_keys }
     - { role: zsh,          when: run_zsh_install }
