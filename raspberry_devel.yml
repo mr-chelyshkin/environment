@@ -11,6 +11,7 @@
     - { role: golang,       when: run_golang_install }
     - { role: python,       when: run_python_install }
     - { role: rust,         when: run_rust_install }
+    - { role: node_js,      when: run_node_js_install }
     # ---
     - { role: zsh,          when: run_zsh_install }
     - { role: neovim,       when: run_neovim_install }

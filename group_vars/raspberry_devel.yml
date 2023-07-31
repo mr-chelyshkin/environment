@@ -27,6 +27,9 @@ golang_aarch: "linux-arm64"
 # rust
 run_rust_install: true
 
+# node js
+run_node_js_install: true
+
 # devel tools:
 run_devel_tools: true
 devel__type: "default"

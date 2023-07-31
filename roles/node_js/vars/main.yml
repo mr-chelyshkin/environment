@@ -1,0 +1,5 @@
+---
+node_js__type: "default"
+
+# default nodeJS version:
+node_js_version: "18.x"
