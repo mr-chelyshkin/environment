@@ -1,0 +1,4 @@
+---
+- name: "rust__default"
+  include_tasks: "default.yml"
+  when: rust__type == "default"

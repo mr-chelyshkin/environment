@@ -1,0 +1,5 @@
+---
+rust__type: "default"
+
+# default rust version:
+rust_version: 3.11
