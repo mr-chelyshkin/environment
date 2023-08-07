@@ -1,4 +1,11 @@
 ---
+- name: "[default] SSH keys: create .ssh"
+  become: false
+  file:
+    path: "~/.ssh"
+    state: directory
+    mode: "0700"
+
 - name: "[default] SSH keys: copy public"
   when: public_key_name != ""
   become: false

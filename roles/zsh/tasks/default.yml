@@ -18,7 +18,7 @@
         path: /bin/zsh
       register: zsh_bin
 
-    - name: "[default] install zsh, Ubuntu"
+    - name: "[default] install zsh, deb"
       apt:
         name: zsh
         state: present

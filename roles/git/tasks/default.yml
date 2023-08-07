@@ -6,7 +6,7 @@
       command: "which git"
       register: git_installed
 
-    - name: "[default] install, Ubuntu"
+    - name: "[default] install, deb"
       apt:
         name: git
         state: present

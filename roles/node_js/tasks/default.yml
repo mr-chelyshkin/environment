@@ -1,5 +1,5 @@
 ---
-- name: "[default] NodeJS: Install node, Ubuntu"
+- name: "[default] NodeJS: Install node, deb"
   when: ansible_pkg_mgr == 'apt'
   block:
     - name: "[default] repository key"

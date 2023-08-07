@@ -2,4 +2,4 @@
 python__type: "default"
 
 # default python version:
-python_version: 3.11
+python_version: 3.11.4
