@@ -1,5 +1,5 @@
 ---
-python__type: "default"
 
-# default python version:
-python_version: 3.11.4
+python_role__type: "source"
+python_version: "3.11.4"
+python_required: true

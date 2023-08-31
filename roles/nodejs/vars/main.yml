@@ -1,0 +1,9 @@
+---
+
+nodejs_role__type: "source"
+nodejs_version: "20.5.1"
+nodejs_required: true
+
+arch_map:
+  x86_64: "x64"
+  aarch64: "arm64"

@@ -1,0 +1,26 @@
+---
+
+- name: "[linux.source] install"
+  become: true
+  block:
+    - name: Download sources
+      get_url:
+        url: "https://nodejs.org/dist/v{{ nodejs_version }}/node-v{{ nodejs_version }}-linux-{{ nodejs_arch }}.tar.xz"
+        dest: "/tmp/node-v{{ nodejs_version }}.{{ nodejs_arch }}.tar.xz"
+        mode: '0755'
+    - name: Extract sources
+      unarchive:
+        src: "/tmp/node-v{{ nodejs_version }}.{{ nodejs_arch }}.tar.xz"
+        dest: "/usr/local"
+        remote_src: yes
+    - name: Rename
+      command: mv /usr/local/node-v{{ nodejs_version }}-linux-{{ nodejs_arch }} /usr/local/node
+    - name: Set Environment Variables
+      lineinfile:
+        path: /etc/profile
+        line: 'export PATH=$PATH:/usr/local/node/bin'
+        create: yes
+  when:
+    - nodejs_version is defined
+    - nodejs_arch is defined
+    - ansible_os_family == "Debian" or ansible_os_family == "RedHat"

@@ -1,79 +1,45 @@
 ---
-- name: "[default] Zsh: Check dependencies"
+
+- name: "[default] install"
+  become: true
   block:
-    - name: "[default] git pkg"
-      ignore_errors: yes
-      command: "which git"
-      register: git_installed
-
-    - name: "[default] install deps: git"
-      import_role:
-        name: git
-      when: git_installed.rc != 0
-
-- name: "[default] Zsh: Install zsh"
-  block:
-    - name: "[default] checking zsh"
-      stat:
-        path: /bin/zsh
-      register: zsh_bin
-
-    - name: "[default] install zsh, deb"
+    - name: Install zsh
       apt:
-        name: zsh
+        name: "{{ item }}"
         state: present
-
-      when: ansible_pkg_mgr == 'apt' and zsh_bin.stat.exists == false
-      changed_when: false
-
-    - name: "[default] install zsh, CentOS/RHEL"
+      loop:
+        - git
+        - zsh
+      when: ansible_pkg_mgr == 'apt'
+    - name: Install
       yum:
-        name: zsh
+        name: "{{ item }}"
         state: present
-
-      when: ansible_pkg_mgr == 'yum' and zsh_bin.stat.exists == false
-      changed_when: false
-
-- name: "[default] Oh My Zsh: Install oh-my-zsh"
-  when: |
-    (ansible_pkg_mgr == 'apt' and zsh_bin.stat.exists == false)
-    or
-    (ansible_pkg_mgr == 'yum' and zsh_bin.stat.exists == false)
-  block:
-    - name: "[default] installing Oh My Zsh"
-      shell: sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+      loop:
+        - git
+        - zsh
+      when: ansible_pkg_mgr == 'yum'
+    - name: Install oh-my-zsh
       become: false
+      shell: sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
       args:
         creates: ~/.oh-my-zsh
       environment:
         RUNZSH: "no"
         CHSH: "no"
-
-    - name: "[default] create the symbolic link for .zshrc"
-      file:
-        src: "/home/{{ ansible_user }}/.zshrc"
-        dest: /root/.zshrc
-        state: link
-
-    - name: "[default] create the symbolic link for .oh-my-zsh"
-      file:
-        src: "/home/{{ ansible_user }}/.oh-my-zsh"
-        dest: /root/.oh-my-zsh
-        state: link
-
-    - name: "[default] make zsh as default [root]"
-      shell: chsh -s /usr/bin/zsh root
+#    - name: Create links
+#      file:
+#        src: "/home/{{ ansible_user }}/{{ item.src }}"
+#        dest: "/root/{{ item.dest }}"
+#        state: link
+#      loop:
+#        - { name: ".zshrc", src: ".zshrc", dest: ".zshrc" }
+#        - { name: ".oh-my-zsh", src: ".oh-my-zsh", dest: ".oh-my-zsh" }
+    - name: Make defaults
+      shell: "chsh -s /usr/bin/zsh {{ item }}"
+      loop:
+        - "{{ ansible_user }}"
       environment:
-        USER: "root"
-
-    - name: "[default] make zsh as default shell for [{{ ansible_user }}]"
-      shell: chsh -s /usr/bin/zsh {{ ansible_user }}
-      environment:
-        USER: "{{ ansible_user }}"
-
-- name: "[default] Oh My Zsh: Prepare .zshrc"
-  block:
-    - name: "[default] update .zshrc file"
-      template:
-        src: templates/zshrc__default.j2
-        dest: "/home/{{ ansible_user }}/.zshrc"
+        USER: "{{ item }}"
+  when:
+    - ansible_os_family == "Debian" or ansible_os_family == "RedHat"

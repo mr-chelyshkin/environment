@@ -1,0 +1,6 @@
+---
+
+nvim_role__type: "default"
+nvim_required: true
+
+nvim_plugins_repo: "https://github.com/mr-chelyshkin/.nvim"

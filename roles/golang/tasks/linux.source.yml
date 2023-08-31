@@ -1,0 +1,39 @@
+---
+
+- name: "[linux.source] install"
+  become: true
+  block:
+    - name: Download sources
+      get_url:
+        url: "https://go.dev/dl/go{{ golang_version }}.linux-{{ golang_arch }}.tar.gz"
+        dest: "/tmp/go{{ golang_version }}.{{ golang_arch }}.tar.gz"
+        mode: '0755'
+    - name: Extract sources
+      unarchive:
+        src: "/tmp/go{{ golang_version }}.{{ golang_arch }}.tar.gz"
+        dest: "/usr/local"
+        remote_src: yes
+    - name: Set go path
+      lineinfile:
+        path: /etc/profile
+        line: 'export PATH=$PATH:/usr/local/go/bin'
+        create: yes
+    - name: Set GOROOT path
+      lineinfile:
+        path: /etc/profile
+        line: 'export GOROOT=/usr/local/go'
+        create: yes
+    - name: Set GOPATH path
+      lineinfile:
+        path: /etc/profile
+        line: 'export GOPATH={{ ansible_env.HOME }}/go'
+        create: yes
+    - name: Set GOBIN path
+      lineinfile:
+        path: /etc/profile
+        line: 'export GOBIN={{ ansible_env.HOME }}/go/bin'
+        create: yes
+  when:
+    - golang_version is defined
+    - golang_arch is defined
+    - ansible_os_family == "Debian" or ansible_os_family == "RedHat"

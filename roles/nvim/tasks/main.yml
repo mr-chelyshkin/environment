@@ -1,0 +1,18 @@
+---
+
+- block:
+
+  # Routing rules ...
+
+  - name: Run default tasks
+    include_tasks: "default.yml"
+    when:
+      - nvim_role__type == 'default'
+
+  - name: Run 'with plugins' tasks
+    include_tasks: "with_plugins.yml"
+    when:
+      - nvim_role__type == 'with_plugins'
+
+  when:
+    - nvim_required

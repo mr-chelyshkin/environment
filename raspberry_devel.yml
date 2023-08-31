@@ -1,18 +1,12 @@
 ---
 - name: "Update and upgrade packages"
   hosts: raspberry_devel
-  become: true
 
   roles:
-#    - { role: pkgs_upgrade, when: run_pkgs_upgrade }
-#    - { role: git,          when: run_git_tools }
-#    - { role: ssh_keys,     when: run_ssh_keys }
-#    # ---
-#    - { role: golang,       when: run_golang_install }
-#    - { role: python,       when: run_python_install }
-#    - { role: rust,         when: run_rust_install }
-#    - { role: node_js,      when: run_node_js_install }
-#    # ---
-    - { role: neovim,       when: run_neovim_install }
-   #  - { role: zsh,          when: run_zsh_install }
-
+    - { role: raspberry, when: raspberry }
+    - { role: docker,    when: docker }
+    - { role: golang,    when: golang }
+    - { role: python,    when: python }
+    - { role: nodejs,    when: nodejs }
+    - { role: nvim,      when: nvim }
+    - { role: zsh,       when: zsh }

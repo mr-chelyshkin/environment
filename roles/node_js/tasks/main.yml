@@ -1,4 +1,0 @@
----
-- name: "node_js__default"
-  include_tasks: "default.yml"
-  when: node_js__type == "default"

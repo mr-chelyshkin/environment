@@ -1,0 +1,55 @@
+---
+- block:
+    - name: Collect 'nodejs' role facts
+      set_fact:
+        _is_installed: false
+        _version_current: "0"
+        _version_required: "{{ nodejs_version }}"
+    - name: Check node binary
+      command: node --version
+      environment:
+        PATH: "/usr/local/node/bin/:/usr/local/bin/node:/usr/bin/node:/usr/bin/nodejs:{{ ansible_env.HOME }}/.nvm/versions/node:{{ ansible_env.PATH }}"
+      register: _exec_result
+      ignore_errors: true
+      changed_when: false
+    - name: Check node version
+      set_fact:
+        _version_current: "{{ _exec_result.stdout | regex_replace('v', '') }}"
+      when: _exec_result.rc == 0
+    - name: Collect 'nodejs' role facts
+      set_fact:
+        _is_installed: true
+      when:
+        - _version_current == _version_required
+        - _exec_result.rc == 0
+  when:
+    - nodejs_required
+
+- block:
+  - name: Check if arch is supported
+    set_fact:
+      is_arch_supported: "{{ ansible_architecture in arch_map }}"
+  - name: Error arch
+    fail:
+      msg: "Node.js installation for arch '{{ ansible_architecture }}' not implemented in role"
+    when:
+      - not is_arch_supported
+  - name: Collect 'nodejs' role facts
+    set_fact:
+      nodejs_arch: "{{ arch_map[ansible_architecture] }}"
+    when:
+      - is_arch_supported
+
+  # Routing rules ...
+
+  - name: Run linux.source tasks
+    include_tasks: "linux.source.yml"
+    when:
+      - nodejs_arch is defined
+      - nodejs_version is defined
+      - nodejs_role__type == 'source'
+      - ansible_os_family == "Debian" or ansible_os_family == "RedHat"
+
+  when:
+    - nodejs_required
+    - not _is_installed

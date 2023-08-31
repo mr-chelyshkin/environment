@@ -1,0 +1,47 @@
+---
+- block:
+    - name: Collect 'docker' role facts
+      set_fact:
+        _is_installed: false
+    - name: Check Docker binary
+      command: docker --version
+      environment:
+        PATH: "/usr/bin:{{ ansible_env.PATH }}"
+      register: _exec_result
+      ignore_errors: true
+      changed_when: false
+    - name: Collect 'docker' role facts
+      set_fact:
+        _is_installed: true
+      when:
+        - _exec_result.rc == 0
+  when:
+    - docker_required
+
+- block:
+    - name: Check if arch is supported for Docker
+      set_fact:
+        docker_is_arch_supported: "{{ ansible_architecture in arch_map }}"
+    - name: Error for unsupported arch
+      fail:
+        msg: "Installing Docker for arch '{{ ansible_architecture }}' not implemented in role"
+      when:
+        - not docker_is_arch_supported
+    - name: Collect 'docker' role facts
+      set_fact:
+        docker_arch: "{{ arch_map[ansible_architecture] }}"
+      when:
+        - docker_is_arch_supported
+
+    # Routing rules ...
+
+    - name: Run linux.source tasks for Docker
+      include_tasks: "linux.source.yml"
+      when:
+        - docker_arch is defined
+        - docker_role__type == 'source'
+        - ansible_os_family == "Debian" or ansible_os_family == "RedHat"
+
+  when:
+    - docker_required
+    - not _is_installed

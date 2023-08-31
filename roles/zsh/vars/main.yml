@@ -1,2 +1,4 @@
 ---
-zsh__type: "default"
+
+zsh_role__type: "default"
+zsh_required: true

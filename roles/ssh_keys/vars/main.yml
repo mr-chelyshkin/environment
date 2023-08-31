@@ -1,8 +1,0 @@
----
-ssh_keys__type: "default"
-
-public_key_name: ""
-private_key_name: ""
-
-public_key_path: "~/.ssh"
-private_key_path: "~/.ssh"

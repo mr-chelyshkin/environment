@@ -1,5 +1,10 @@
 ---
-golang__type: "default"
-golang_version: 1.20.6
-golang_aarch: "linux-arm64"
-golang_path: "/usr/local/go"
+
+golang_role__type: "source"
+golang_version: "1.21.0"
+golang_required: true
+
+arch_map:
+  x86_64: "amd64"
+  armv7l: "armv6l"
+  aarch64: "arm64"

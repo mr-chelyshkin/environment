@@ -1,0 +1,34 @@
+---
+
+- name: Check /proc/device-tree/model
+  stat:
+    path: /proc/device-tree/model
+  register: raspberry_facts_file
+
+- name: Error if facts not collected
+  fail:
+    msg: "Cannot collect 'raspberry' role facts"
+  when: not raspberry_facts_file.stat.exists
+
+- name: Collect 'raspberry' role facts
+  command: cat /proc/device-tree/model
+  when: raspberry_facts_file.stat.exists
+  register: raspberry_facts
+
+- name: Error device is not a Raspberry
+  fail:
+    msg: "Current device is not a Raspberry Pi"
+  when: "'Raspberry Pi' not in raspberry_facts.stdout"
+
+- name: Extract Raspberry Pi model
+  set_fact:
+    rasp_model: "{{ raspberry_facts.stdout | regex_search('(\\d Model [A-Z])') }}"
+  when: "'Raspberry Pi' in raspberry_facts.stdout"
+
+# Routing rules ...
+
+- name: Run raspbian.devel tasks
+  include_tasks: "raspbian.devel.yml"
+  when:
+    - raspberry_role__type == "devel"
+    - rasp_model[0] == "4"

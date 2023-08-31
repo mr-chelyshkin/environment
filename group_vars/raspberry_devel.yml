@@ -1,41 +1,11 @@
 ---
 ansible_host: raspberrypi.local
 
-# upgrade config:
-run_pkgs_upgrade: true
-pkgs_upgrade__type: "default"
-
-# neovim:
-run_neovim_install: true
-neovim__type: "default"
-
-# zsh:
-run_zsh_install: true
-zsh__type: "default"
-
-# python:
-run_python_install: true
-python__type: "default"
-python_version: 3.11
-
-# golang:
-run_golang_install: true
-golang__type: "default"
-golang_version: "1.20.6"
-golang_aarch: "linux-arm64"
-
-# rust
-run_rust_install: true
-
-# node js
-run_node_js_install: true
-
-# devel tools:
-run_devel_tools: true
-devel__type: "default"
-
-# git:
-run_git_tools: true
-
-# ssh_keys
-run_ssh_keys: true
+# roles
+raspberry: true
+docker:    true
+golang:    true
+python:    true
+nodejs:    true
+nvim:      true
+zsh:       true

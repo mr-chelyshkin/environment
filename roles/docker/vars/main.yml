@@ -1,0 +1,8 @@
+---
+docker_role__type: "source"
+docker_required: true
+
+arch_map:
+  x86_64: "amd64"
+  armv7l: "armv6l"
+  aarch64: "arm64"
