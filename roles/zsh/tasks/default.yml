@@ -41,5 +41,22 @@
         - "{{ ansible_user }}"
       environment:
         USER: "{{ item }}"
+    - name: Get /etc/profile
+      slurp:
+        src: "/etc/profile"
+      register: profile_content
+    - name: Check /etc/profile content
+      set_fact:
+        filtered_content: "{{ (profile_content['content'] | b64decode).splitlines() | select('match', '^(export|alias) ') | list }}"
+    - name: Update .zshrc
+      become: false
+      blockinfile:
+        path: "/home/{{ ansible_user }}/.zshrc"
+        block: |
+          {% for line in filtered_content %}
+          {{ line }}
+          {% endfor %}
+        marker: "# {mark} ANSIBLE MANAGED BLOCK - /etc/profile content"
+
   when:
     - ansible_os_family == "Debian" or ansible_os_family == "RedHat"
