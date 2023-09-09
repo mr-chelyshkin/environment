@@ -1,5 +1,5 @@
 ---
-- name: "[raspbian.devel] repository"
+- name: "[raspbian.devel] deps"
   become: true
   block:
     - name: Update cache
@@ -14,9 +14,43 @@
         name: "{{ item }}"
         state: present
       loop:
+        - jq
         - git
         - gcc
         - make
         - snapd
         - libiw-dev
   when: ansible_pkg_mgr == 'apt'
+
+- name: "[raspbian.devel] network"
+  become: true
+  block:
+    - name: Check releases
+      uri:
+        url: "https://api.github.com/repos/mr-chelyshkin/rpi4_network_controller/releases/latest"
+        return_content: yes
+      register: latest_release_response
+    - name: Get last
+      set_fact:
+        latest_release_assets_url: "{{ latest_release_response.json.assets_url }}"
+    - name: Assets url
+      uri:
+        url: "{{ latest_release_assets_url }}"
+        return_content: yes
+      register: release_assets_response
+      vars:
+        asset_name: "network"
+    - name: Find download URL in assets
+      set_fact:
+        download_url: "{{ item.browser_download_url }}"
+      loop: "{{ release_assets_response.json }}"
+      when: "asset_name in item.name"
+      loop_control:
+        label: "{{ item.name }}"
+    - name: Download the identified asset
+      get_url:
+        url: "{{ download_url }}"
+        dest: "/usr/bin"
+  vars:
+    asset_name: "network"
+
