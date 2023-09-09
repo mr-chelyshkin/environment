@@ -50,7 +50,11 @@
     - name: Download the identified asset
       get_url:
         url: "{{ download_url }}"
-        dest: "/usr/bin"
+        dest: "/bin"
+    - name: Chmod
+      file:
+        path: /bin/network
+        mode: 'a+x'
   vars:
     asset_name: "network"
 
