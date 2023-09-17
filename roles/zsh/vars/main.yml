@@ -2,3 +2,4 @@
 
 zsh_role__type: "default"
 zsh_required: true
+zsh_user: "{{ ansible_user }}"

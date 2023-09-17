@@ -53,11 +53,14 @@
       command:
         cmd: "make altinstall"
         chdir: "/tmp/Python-{{ python_version }}"
-    - name: prepare pip
+    - name: Prepare pip
       file:
         src: "/usr/local/bin/pip{{ python_version | regex_replace('^([0-9]+\\.[0-9]+).*', '\\1') }}"
         dest: /usr/local/bin/pip3
         state: link
+    - name: Cleanup
+      command:
+        cmd: "rm -rf /tmp/Python-{{ python_version }}"
   when:
     - python_version is defined
     - ansible_os_family == "Debian" or ansible_os_family == "RedHat"

@@ -1,0 +1,17 @@
+---
+# Raspberry Pi for developers.
+
+# You can disable unnecessary:
+# $ ansible-playbook ... --extra-vars "{{ role_name }}=false"
+
+# You can change "default" playbook:
+# $ ansible-playbook ... --extra-vars "{{ role_name }}_role__type={{ playbook_name }}"
+
+# Default roles:
+raspberry: true
+docker:    true
+golang:    true
+python:    true
+nodejs:    true
+nvim:      true
+zsh:       true

@@ -30,7 +30,7 @@
         url: "https://api.github.com/repos/mr-chelyshkin/rpi4_network_controller/releases/latest"
         return_content: yes
       register: latest_release_response
-    - name: Get last
+    - name: Get last release
       set_fact:
         latest_release_assets_url: "{{ latest_release_response.json.assets_url }}"
     - name: Assets url
@@ -40,20 +40,20 @@
       register: release_assets_response
       vars:
         asset_name: "network"
-    - name: Find download URL in assets
+    - name: Find URL in assets
       set_fact:
         download_url: "{{ item.browser_download_url }}"
       loop: "{{ release_assets_response.json }}"
       when: "asset_name in item.name"
       loop_control:
         label: "{{ item.name }}"
-    - name: Download the identified asset
+    - name: Download
       get_url:
         url: "{{ download_url }}"
-        dest: "/bin"
+        dest: "/usr/bin"
     - name: Chmod
       file:
-        path: /bin/network
+        path: /usr/bin/network
         mode: 'a+x'
   vars:
     asset_name: "network"

@@ -11,7 +11,7 @@
         - git
         - zsh
       when: ansible_pkg_mgr == 'apt'
-    - name: Install
+    - name: Install zsh
       yum:
         name: "{{ item }}"
         state: present
@@ -19,28 +19,19 @@
         - git
         - zsh
       when: ansible_pkg_mgr == 'yum'
+    - name: Set user home
+      set_fact:
+        user_home: "{{ ansible_env.HOME }}"
     - name: Install oh-my-zsh
       become: false
       shell: sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
       args:
-        creates: ~/.oh-my-zsh
+        creates: "{{ user_home }}/.oh-my-zsh"
       environment:
         RUNZSH: "no"
         CHSH: "no"
-#    - name: Create links
-#      file:
-#        src: "/home/{{ ansible_user }}/{{ item.src }}"
-#        dest: "/root/{{ item.dest }}"
-#        state: link
-#      loop:
-#        - { name: ".zshrc", src: ".zshrc", dest: ".zshrc" }
-#        - { name: ".oh-my-zsh", src: ".oh-my-zsh", dest: ".oh-my-zsh" }
     - name: Make defaults
-      shell: "chsh -s /usr/bin/zsh {{ item }}"
-      loop:
-        - "{{ ansible_user }}"
-      environment:
-        USER: "{{ item }}"
+      shell: "chsh -s /usr/bin/zsh {{ ansible_user }}"
     - name: Get /etc/profile
       slurp:
         src: "/etc/profile"
@@ -51,7 +42,7 @@
     - name: Update .zshrc
       become: false
       blockinfile:
-        path: "/home/{{ ansible_user }}/.zshrc"
+        path: "{{ user_home }}/.zshrc"
         block: |
           {% for line in filtered_content %}
           {{ line }}
