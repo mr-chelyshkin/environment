@@ -12,8 +12,8 @@ golang_profile_path: "/etc/profile"
 
 # source url.
 golang_source_url: "https://go.dev/dl/go{{ golang_version }}.{{ golang_os_type }}-{{ golang_arch_type }}.tar.gz"
-golang_os_type: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
-golang_arch_type: "{{ golang_arch_map[ansible_architecture] }}"
+golang_os_type:    "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+golang_arch_type:  "{{ golang_arch_map[ansible_architecture] }}"
 
 # Mapping system architecture to architecture identifiers.
 golang_arch_map:
