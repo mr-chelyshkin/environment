@@ -31,7 +31,6 @@
         - "export GOPATH={{ golang_source_path }}"
         - "export GOBIN={{ golang_source_path }}/bin"
         - "export GOROOT={{ golang_source_path }}/go{{ golang_version }}"
-        - "export PATH=$PATH:{{ golang_source_path }}/go{{ golang_version }}/bin:{{ golang_source_path }}/bin"
     lineinfile:
       path: "{{ golang_profile_path }}"
       regexp: "^{{ item.split('=')[0] }}"
@@ -41,3 +40,11 @@
     file:
       path: "/tmp/go{{ golang_version }}.tar.gz"
       state: absent
+  - name: Set PATH
+    lineinfile:
+      path: "{{ golang_profile_path }}"
+      line: 'export PATH=$PATH:{{ golang_source_path }}/go{{ golang_version }}/bin:{{ golang_source_path }}/bin'
+      insertafter: EOF
+      state: present
+      regexp: '^export PATH=.*{{ golang_source_path | regex_escape() }}/go{{ golang_version }}/bin:{{ golang_source_path | regex_escape() }}/bin'
+
