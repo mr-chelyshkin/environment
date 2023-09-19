@@ -1,26 +1,38 @@
 ---
-
-- name: "[linux.source] install"
-  become: true
+- become: true
   block:
-    - name: Download sources
-      get_url:
-        url: "https://nodejs.org/dist/v{{ nodejs_version }}/node-v{{ nodejs_version }}-linux-{{ nodejs_arch }}.tar.xz"
-        dest: "/tmp/node-v{{ nodejs_version }}.{{ nodejs_arch }}.tar.xz"
-        mode: '0755'
-    - name: Extract sources
-      unarchive:
-        src: "/tmp/node-v{{ nodejs_version }}.{{ nodejs_arch }}.tar.xz"
-        dest: "/usr/local"
-        remote_src: yes
-    - name: Rename
-      command: mv /usr/local/node-v{{ nodejs_version }}-linux-{{ nodejs_arch }} /usr/local/node
-    - name: Set Environment Variables
-      lineinfile:
-        path: /etc/profile
-        line: 'export PATH=$PATH:/usr/local/node/bin'
-        create: yes
-  when:
-    - nodejs_version is defined
-    - nodejs_arch is defined
-    - ansible_os_family == "Debian" or ansible_os_family == "RedHat"
+  - name: Download sources
+    get_url:
+      url: "{{ nodejs_source_url }}"
+      dest: "/tmp/node{{ nodejs_version }}.tar.gz"
+      mode: '0755'
+  - name: Check source path
+    file:
+      path: "{{ nodejs_source_path }}"
+      state: directory
+      mode: '0755'
+      owner: root
+      group: root
+  - name: Extract sources
+    unarchive:
+      src: "/tmp/node{{ nodejs_version }}.tar.gz"
+      dest: "{{ nodejs_source_path }}"
+      remote_src: yes
+  - name: Cleanup
+    file:
+      path: "{{ nodejs_source_path }}/node{{ nodejs_version }}"
+      state: absent
+  - name: Rename sources
+    command:
+      cmd: "mv {{ nodejs_source_path }}/node-v{{ nodejs_version }}-{{ nodejs_os_type }}-{{ nodejs_arch_type }} {{ nodejs_source_path }}/node{{ nodejs_version }}"
+  - name: Set PATH
+    lineinfile:
+      path: "{{ nodejs_profile_path }}"
+      line: 'export PATH=$PATH:{{ nodejs_source_path }}/node{{ nodejs_version }}/bin'
+      insertafter: EOF
+      state: present
+      regexp: '^export PATH=.*{{ nodejs_source_path | regex_escape() }}/node{{ nodejs_version }}/bin'
+  - name: Cleanup
+    file:
+      path: "/tmp/node{{ nodejs_version }}.tar.gz"
+      state: absent

@@ -4,6 +4,19 @@ nodejs_role__type: "source"
 nodejs_version: "20.5.1"
 nodejs_required: true
 
-arch_map:
+# nodejs installation path.
+# example: nodejs_source_path: "/usr/local/node", nodejs_version: "20.5.1" -> result: /usr/local/node/node20.5.1
+nodejs_source_path: "/usr/local/node"
+
+# profile for export nodejs environment.
+nodejs_profile_path: "/etc/profile"
+
+# source url.
+nodejs_source_url: "https://nodejs.org/dist/v{{ nodejs_version }}/node-v{{ nodejs_version }}-linux-{{ nodejs_arch_type }}.tar.xz"
+nodejs_os_type:    "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+nodejs_arch_type:  "{{ nodejs_arch_map[ansible_architecture] }}"
+
+# Mapping system architecture to architecture identifiers.
+nodejs_arch_map:
   x86_64: "x64"
   aarch64: "arm64"

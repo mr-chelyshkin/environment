@@ -1,22 +1,31 @@
-# Install nodejs
-Install nodejs
+# NodeJS.
+For manage version to install:
+```yaml
+nodejs_version: "20.5.1"
+```
+For manage installing path:
+```yaml
+nodejs_source_path: "/usr/local/node"
+```
+Specify profile [`.bashrc`, `.zshrc`, `etc`, ...] for add NodeEnvs:
+```yaml
+nodejs_profile_path: "/etc/profile"
+```
+More settings in `./vars/{{ file.yml }}`
 
-## linux.source.yml
-Downloads Node.js from its official source and extracts it to a system-wide location.
+### Notes
+About environment.
+```yaml
+pattern: {{ nodejs_source_path }}/node{{ nodejs_version }}
 
-### Modifications:
-- Binary Paths:
-  - `/usr/local/node/bin/node`
-  - `/usr/local/node/bin/npm`
-  - `/usr/local/node/bin/npx`
-- Configuration Changes:
-  - `libffi-devel` development files for the Foreign Function Interface library
-  - `/usr/local/node/bin` added to the system PATH in `/etc/profile`
-  - `openssl-devel` development files for OpenSSL
+nodejs_source_path: "/usr/local/node"
+nodejs_version: "20.5.1"
 
-### Variables:
-- "nodejs_version" as default: `20.5.1`.
+RESULT: "/usr/local/node/node20.5.1"
+```
+It's done this way so that you can have multiple different versions of NodeJS.
 
 ### Supported Platforms:
 - Debian-based Linux distributions
 - RedHat-based Linux distributions
+- Darwin (macOS)
