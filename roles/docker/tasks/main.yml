@@ -1,5 +1,10 @@
 ---
 - block:
+  - name: Check OS
+    fail:
+      msg: "Unsupported platform: {{ ansible_os_family }}"
+    when: ansible_os_family != 'Debian' and ansible_os_family != 'RedHat'
+
   - include_tasks: setup-redhat.yml
     when: ansible_os_family == 'RedHat'
 
