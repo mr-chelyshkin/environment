@@ -1,0 +1,44 @@
+---
+- become: true
+  block:
+  - name: Checking old versions
+    package:
+      name:
+        - docker
+        - docker-engine
+      state: absent
+  - name: Check docker dependencies
+    apt:
+      name:
+        - apt-transport-https
+        - ca-certificates
+      state: present
+  - name: Check additional dependencies
+    apt:
+      name: gnupg
+      state: present
+    when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('20.04', '>=')
+  - name: Add apt key
+    ansible.builtin.get_url:
+      url: "{{ docker_apt_gpg_key }}"
+      dest: /etc/apt/trusted.gpg.d/docker.asc
+      mode: '0644'
+      force: false
+      checksum: "{{ docker_apt_gpg_key_checksum | default(omit) }}"
+    register: add_repository_key
+    ignore_errors: true
+  - name: Check curl (on older systems without SNI)
+    package:
+      name:
+      - curl
+      state: present
+    when: add_repository_key is failed
+  - name: Add apt key (alternative for older systems without SNI)
+    shell: >
+      curl -sSL {{ docker_apt_gpg_key }} | apt-key add -
+    when: add_repository_key is failed
+  - name: Add repository
+    apt_repository:
+      repo: "{{ docker_apt_repository }}"
+      state: present
+      update_cache: true

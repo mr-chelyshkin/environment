@@ -1,7 +1,44 @@
 ---
-docker_role__type: "source"
 docker_required: true
+docker_repo_url: "https://download.docker.com/linux"
 
+docker_edition: 'ce'
+docker_packages:
+  - "docker-{{ docker_edition }}"
+  - "docker-{{ docker_edition }}-cli"
+  - "docker-{{ docker_edition }}-rootless-extras"
+  - "containerd.io"
+
+# Docker daemon options.
+docker_daemon_options:
+  storage-driver: "devicemapper"
+  log-opts:
+    max-size: "20m"
+
+# A list of system users to be added to the docker group
+docker_users: [
+  "{{ ansible_user }}"
+]
+
+# Docker Compose.
+docker_install_compose: true
+docker_compose_version: "v2.21.0"
+docker_compose_url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-linux-{{ ansible_architecture }}"
+docker_compose_path: /usr/local/bin/docker-compose
+
+# Debian/Ubuntu.
+docker_apt_release_channel: "stable"
+docker_apt_gpg_key: "{{ docker_repo_url }}/{{ ansible_distribution | lower }}/gpg"
+docker_apt_gpg_key_checksum: "sha256:1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570"
+docker_apt_repository: "deb [arch={{ arch_map[ansible_architecture] }} signed-by=/etc/apt/trusted.gpg.d/docker.asc] {{ docker_repo_url }}/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} {{ docker_apt_release_channel }}"
+
+# RedHat/CentOS/Fedora.
+docker_yum_repo_url: "{{ docker_repo_url }}/{{ (ansible_distribution == 'Fedora') | ternary('fedora','centos') }}/docker-{{ docker_edition }}.repo"
+docker_yum_repo_enable_nightly: '0'
+docker_yum_repo_enable_test: '0'
+docker_yum_gpg_key: "{{ docker_repo_url }}/centos/gpg"
+
+# Mapping system architecture to architecture identifiers.
 arch_map:
   x86_64: "amd64"
   armv7l: "armv6l"

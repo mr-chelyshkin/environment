@@ -1,0 +1,44 @@
+---
+- become: true
+  block:
+  - name: Checking old versions
+    package:
+      name:
+        - docker
+        - docker-common
+        - docker-engine
+      state: absent
+  - name: Add Docker gpg key.
+    rpm_key:
+      key: "{{ docker_yum_gpg_key }}"
+      state: present
+  - name: Add repository
+    get_url:
+      url: "{{ docker_yum_repo_url }}"
+      dest: "/etc/yum.repos.d/docker-{{ docker_edition }}.repo"
+      owner: root
+      group: root
+      mode: 0644
+  - name: Configure Nightly repo
+    ini_file:
+      dest: "/etc/yum.repos.d/docker-{{ docker_edition }}.repo"
+      section: "docker-{{ docker_edition }}-nightly"
+      option: enabled
+      value: "{{ docker_yum_repo_enable_nightly }}"
+      mode: 0644
+      no_extra_spaces: true
+  - name: Configure Test repo
+    ini_file:
+      dest: "/etc/yum.repos.d/docker-{{ docker_edition }}.repo"
+      section: "docker-{{ docker_edition }}-test"
+      option: enabled
+      value: "{{ docker_yum_repo_enable_test }}"
+      mode: 0644
+      no_extra_spaces: true
+  - name: Configure containerd on RHEL 8
+    package:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - container-selinux
+      - containerd.io
