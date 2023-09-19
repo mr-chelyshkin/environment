@@ -1,56 +1,21 @@
 ---
-
 - block:
-  - name: Collect 'golang' role facts
-    set_fact:
-      _is_installed: false
-      _version_current: "0"
-      _version_required: "{{ golang_version }}"
-  - name: Check binary
-    command: go version
-    environment:
-      PATH: "{{ ansible_env.HOME }}/go{{ golang_version }}/bin:/usr/local/go{{ golang_version }}/bin:/usr/local/go/bin:/usr/local/bin:/usr/bin:{{ ansible_env.PATH }}"
-    register: _exec_result
-    ignore_errors: true
-    changed_when: false
-  - name: Check version
-    set_fact:
-      _version_current: "{{ _exec_result.stdout | regex_search('go([0-9.]+)', '\\1') }}"
-    when: _exec_result.rc == 0
-  - name: Collect 'golang' role facts
-    set_fact:
-      _is_installed: true
-    when:
-     - _version_current[0] == _version_required
-     - _exec_result.rc == 0
-  when:
-  - golang_required
-
-- block:
-  - name: Check if arch is supported
-    set_fact:
-      is_arch_supported: "{{ ansible_architecture in arch_map }}"
-  - name: Error arch
+  - name: Check OS
     fail:
-      msg: "install golang for arch '{{ ansible_architecture }}' not implemented in role"
-    when:
-      - not is_arch_supported
-  - name: Collect 'golang' role facts
-    set_fact:
-      golang_arch: "{{ arch_map[ansible_architecture] }}"
-    when:
-      - is_arch_supported
+      msg: "Unsupported platform: {{ ansible_os_family }}"
+    when: ansible_os_family not in ['Debian', 'RedHat', 'Darwin']
+  - name: Check Architecture
+    fail:
+      msg: "Unsupported architecture: {{ ansible_architecture }}"
+    when: ansible_architecture not in golang_arch_map
 
    # Routing rules ...
-
-  - name: Run linux.source tasks
-    include_tasks: "linux.source.yml"
-    when:
-      - golang_arch is defined
-      - golang_version is defined
-      - golang_role__type == 'source'
-      - ansible_os_family == "Debian" or ansible_os_family == "RedHat"
+  - name: Install from sources
+    block:
+      - name: Install
+        include_tasks: "source.yml"
+        when: ansible_os_family in ['Debian', 'RedHat', 'Darwin']
+    when: golang_role__type == 'source'
 
   when:
   - golang_required
-  - not _is_installed

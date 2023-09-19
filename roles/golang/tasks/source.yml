@@ -1,0 +1,43 @@
+---
+- become: true
+  block:
+  - name: Download sources
+    get_url:
+      url: "{{ golang_source_url }}"
+      dest: "/tmp/go{{ golang_version }}.tar.gz"
+      mode: '0755'
+  - name: Check source path
+    file:
+      path: "{{ golang_source_path }}"
+      state: directory
+      mode: '0755'
+      owner: root
+      group: root
+  - name: Extract sources
+    unarchive:
+      src: "/tmp/go{{ golang_version }}.tar.gz"
+      dest: "{{ golang_source_path }}"
+      remote_src: yes
+  - name: Cleanup
+    file:
+      path: "{{ golang_source_path }}/go{{ golang_version }}"
+      state: absent
+  - name: Rename sources
+    command:
+      cmd: "mv {{ golang_source_path }}/go {{ golang_source_path }}/go{{ golang_version }}"
+  - name: Set profile
+    vars:
+      go_env_vars:
+        - "export GOPATH={{ golang_source_path }}"
+        - "export GOBIN={{ golang_source_path }}/bin"
+        - "export GOROOT={{ golang_source_path }}/go{{ golang_version }}"
+        - "export PATH=$PATH:{{ golang_source_path }}/go{{ golang_version }}/bin:{{ golang_source_path }}/bin"
+    lineinfile:
+      path: "{{ golang_profile_path }}"
+      regexp: "^{{ item.split('=')[0] }}"
+      line: "{{ item }}"
+    loop: "{{ go_env_vars }}"
+  - name: Cleanup
+    file:
+      path: "/tmp/go{{ golang_version }}.tar.gz"
+      state: absent

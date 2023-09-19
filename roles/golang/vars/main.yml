@@ -1,10 +1,22 @@
 ---
-
 golang_role__type: "source"
 golang_version: "1.21.0"
 golang_required: true
 
-arch_map:
-  x86_64: "amd64"
-  armv7l: "armv6l"
+# golang installation path.
+# example: golang_source_path: "/usr/local/go", golang_version: "1.21.0" -> result: /usr/local/go/go1.21.0
+golang_source_path: "/usr/local/go"
+
+# profile for export golang environment.
+golang_profile_path: "/etc/profile"
+
+# source url.
+golang_source_url: "https://go.dev/dl/go{{ golang_version }}.{{ golang_os_type }}-{{ golang_arch_type }}.tar.gz"
+golang_os_type: "{{ 'darwin' if ansible_os_family == 'Darwin' else 'linux' }}"
+golang_arch_type: "{{ golang_arch_map[ansible_architecture] }}"
+
+# Mapping system architecture to architecture identifiers.
+golang_arch_map:
+  x86_64:  "amd64"
+  armv7l:  "armv6l"
   aarch64: "arm64"
