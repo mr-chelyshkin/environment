@@ -37,6 +37,8 @@ nvim_plugins_users: [
 If `nvim_plugins_repo` is empty: install Nvim config will skip. 
 Nvim config install NvChad and clone sources from remote 
 repository to: `/home/[ user in nvim_plugins_users ]/.config/nvim/lua/custom`.
+  
+Nvim config [example](https://github.com/mr-chelyshkin/.nvim/blob/main/README.md).
 
 ### Supported Platforms:
 - Debian-based Linux distributions
