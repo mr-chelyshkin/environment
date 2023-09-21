@@ -8,4 +8,10 @@
   - include_tasks: install-linux.yml
     when: ansible_os_family == 'Debian'
 
+  - include_tasks: nvim-plugins.yml
+    loop: "{{ nvim_plugins_users }}"
+    loop_control:
+      loop_var: user
+    when: nvim_plugins_repo != ""
+
   when: nvim_required

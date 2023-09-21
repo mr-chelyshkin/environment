@@ -2,9 +2,20 @@
 nvim_required: true
 nvim_version: "latest/stable"
 
-# profile for export snap environment and add nvim aliases.
+# Profile for export snap environment and add nvim aliases.
 nvim_profile_path: "/etc/profile"
 
-# add aliases vi -> nvim and vim -> nvim.
+# Add aliases vi -> nvim and vim -> nvim.
 nvim_vi_alias:  true
 nvim_vim_alias: true
+
+# Add url for install nvim plugins.
+# If not set, plugins will not install.
+# nvim_plugins_repo is a link for repository with data for .config/nvim/lua/custom.
+# nvChad required and included in a playbook.
+nvim_plugins_repo: "https://github.com/mr-chelyshkin/.nvim"
+
+# A list of users to be nvim plugins added
+nvim_plugins_users: [
+  "{{ ansible_user }}",
+]

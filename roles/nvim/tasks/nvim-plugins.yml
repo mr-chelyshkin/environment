@@ -1,0 +1,34 @@
+---
+- become: true
+  block:
+  - name: NvChad
+    git:
+      repo: https://github.com/NvChad/NvChad
+      dest: "/home/{{ user }}/.config/nvim"
+      version: HEAD
+      depth: 1
+  - name: Cleanup share
+    file:
+      path: "/home/{{ user }}/.local/share/"
+      state: absent
+  - name: Cleanup cache
+    file:
+      path: "/home/{{ user }}/.cache/nvim"
+      state: absent
+  - name: Cleanup defaults configuration
+    file:
+      path: "/home/{{ user }}/.config/nvim/lua/custom"
+      state: absent
+  - name: Add custom plugins
+    git:
+      repo: "{{ nvim_plugins_repo }}"
+      dest: "/home/{{ user }}/.config/nvim/lua/custom"
+      version: HEAD
+      depth: 1
+  - name: Set plugins owner
+    file:
+      path: "/home/{{ user }}/.config"
+      owner: "{{ user }}"
+      recurse: yes
+
+  when: user
