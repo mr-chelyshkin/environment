@@ -31,7 +31,7 @@
       line: 'export PATH=$PATH:{{ nodejs_source_path }}/node{{ nodejs_version }}/bin'
       insertafter: EOF
       state: present
-      regexp: '^export PATH=.*{{ nodejs_source_path | regex_escape() }}/node{{ nodejs_version }}/bin'
+      regexp: '^export PATH=.*{{ nodejs_source_path | regex_escape() }}/node(\d+\.)?(\d+\.)?(\d+)/bin'
   - name: Cleanup
     file:
       path: "/tmp/node{{ nodejs_version }}.tar.gz"

@@ -1,0 +1,12 @@
+---
+- become: true
+  block:
+  - name: Check dependencies
+    package:
+      name:
+        - snapd
+      state: present
+  - name: Checking old versions
+    community.general.snap:
+      name: nvim
+      state: absent
