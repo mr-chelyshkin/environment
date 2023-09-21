@@ -28,8 +28,8 @@
   - name: Set profile
     vars:
       go_env_vars:
-        - "export GOPATH={{ golang_source_path }}"
-        - "export GOBIN={{ golang_source_path }}/bin"
+        - "export GOBIN=${GOPATH}/bin"
+        - "export GOPATH=${HOME}/go"
         - "export GOROOT={{ golang_source_path }}/go{{ golang_version }}"
     lineinfile:
       path: "{{ golang_profile_path }}"
@@ -43,8 +43,7 @@
   - name: Set PATH
     lineinfile:
       path: "{{ golang_profile_path }}"
-      line: 'export PATH=$PATH:{{ golang_source_path }}/go{{ golang_version }}/bin:{{ golang_source_path }}/bin'
+      line: 'export PATH=$PATH:{{ golang_source_path }}/go{{ golang_version }}/bin:${HOME}/go'
       insertafter: EOF
       state: present
-      regexp: '^export PATH=.*{{ golang_source_path | regex_escape() }}/go(\d+\.)?(\d+\.)?(\d+)/bin:{{ golang_source_path | regex_escape() }}/bin'
-
+      regexp: '^export PATH=.*/go.*/bin$'

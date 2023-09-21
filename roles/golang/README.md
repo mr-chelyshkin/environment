@@ -21,10 +21,9 @@ pattern: {{ golang_source_path }}/go{{ golang_version }}
 golang_source_path: "/usr/local/go"
 golang_version: "1.21.0"
 
-RESULT: "/usr/local/go/go1.21.0"
 GOROOT: "/usr/local/go/go1.21.0"
-GOBIN:  "/usr/local/go/bin"
-GOPATH: "/usr/local/go/"
+GOBIN:  "${HOME}/go/bin"
+GOPATH: "${HOME}/go"
 ```
 It's done this way so that you can have multiple different versions of GoLang by changing only GOROOT.
 
