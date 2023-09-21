@@ -1,0 +1,11 @@
+---
+- block:
+  - name: Check OS
+    fail:
+      msg: "Unsupported platform: {{ ansible_os_family }}"
+    when: ansible_os_family not in ['Debian', 'RedHat']
+
+  - include_tasks: install-linux.yml
+    when: ansible_os_family == 'Debian'
+
+  when: nvim_required

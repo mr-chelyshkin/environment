@@ -6,7 +6,37 @@
       name:
         - snapd
       state: present
+  - name: Upgrade dependencies
+    community.general.snap:
+      name: core
+      state: present
+  - name: Set PATH
+    lineinfile:
+      path: "{{ nvim_profile_path }}"
+      line: 'export PATH=$PATH:/snap/bin'
+      regexp: '^export PATH=.*/snap/bin'
+      insertafter: EOF
+      state: present
   - name: Checking old versions
     community.general.snap:
       name: nvim
       state: absent
+  - name: Install
+    community.general.snap:
+      name: nvim
+      state: present
+      classic: yes
+      channel: "{{ nvim_version }}"
+  - name: Add alias vi -> nvim
+    lineinfile:
+      line: 'alias vi=/snap/bin/nvim'
+      path: "{{ nvim_profile_path }}"
+      regexp: '^alias vi='
+    when: nvim_vi_alias
+  - name: Add alias vim -> nvim
+    lineinfile:
+      line: 'alias vim=/snap/bin/nvim'
+      path: "{{ nvim_profile_path }}"
+      regexp: '^alias vim='
+    when: nvim_vim_alias
+

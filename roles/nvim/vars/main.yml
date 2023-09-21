@@ -1,6 +1,10 @@
 ---
-
-nvim_role__type: "default"
 nvim_required: true
+nvim_version: "latest/stable"
 
-nvim_plugins_repo: "https://github.com/mr-chelyshkin/.nvim"
+# profile for export snap environment and add nvim aliases.
+nvim_profile_path: "/etc/profile"
+
+# add aliases vi -> nvim and vim -> nvim.
+nvim_vi_alias:  true
+nvim_vim_alias: true
