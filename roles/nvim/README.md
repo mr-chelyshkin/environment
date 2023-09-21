@@ -34,8 +34,9 @@ nvim_plugins_users: [
   "{{ ansible_user }}",
 ]
 ```
-If `nvim_plugins_repo` is empty: install Nvim config will skip.  
-Nvim config install NvChad and clone sources from remote repository to: `/home/[ user in nvim_plugins_users ]/.config/nvim/lua/custom`.
+If `nvim_plugins_repo` is empty: install Nvim config will skip. 
+Nvim config install NvChad and clone sources from remote 
+repository to: `/home/[ user in nvim_plugins_users ]/.config/nvim/lua/custom`.
 
 ### Supported Platforms:
 - Debian-based Linux distributions
