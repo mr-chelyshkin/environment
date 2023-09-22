@@ -1,0 +1,29 @@
+---
+- block:
+  - name: Check OS
+    fail:
+      msg: "Unsupported platform: {{ ansible_os_family }}"
+    when: ansible_os_family not in ['Debian', 'RedHat']
+
+  - name: "Update and upgrade"
+    become: true
+    block:
+      - name: Update cache
+        apt:
+          update_cache: yes
+      - name: Upgrade pkgs
+        apt:
+          upgrade: safe
+          autoremove: yes
+    when: ansible_os_family in ['Debian']
+  - name: "Update and upgrade"
+    become: true
+    block:
+      - name: Update cache
+        yum:
+          update_cache: yes
+      - name: Upgrade pkgs
+        yum:
+          name: '*'
+          state: latest
+    when: ansible_os_family in ['RedHat']
