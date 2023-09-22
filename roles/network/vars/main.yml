@@ -1,0 +1,7 @@
+---
+network_required: true
+
+# Mapping system architecture to architecture identifiers.
+arch_map:
+  armv7l: "armv6l"
+  aarch64: "arm64"

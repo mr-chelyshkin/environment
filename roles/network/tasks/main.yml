@@ -1,0 +1,48 @@
+---
+- block:
+  - name: Check OS
+    fail:
+      msg: "Unsupported platform: {{ ansible_os_family }}"
+    when: ansible_os_family not in ['Debian']
+  - name: Check Architecture
+    fail:
+      msg: "Unsupported architecture: {{ ansible_architecture }}"
+    when: ansible_architecture not in arch_map
+
+  - include_tasks: setup-debian.yml
+    when: ansible_os_family == 'Debian'
+
+  - name: Install
+    become: true
+    block:
+    - name: Get the latest release
+      uri:
+        url: "https://api.github.com/repos/mr-chelyshkin/rpi4_network_controller/releases/latest"
+        return_content: yes
+      register: latest_release_response
+    - name: Fetch assets from the latest release
+      uri:
+        url: "{{ latest_release_response.json.assets_url }}"
+        return_content: yes
+      register: release_assets_response
+    - name: Determine the download URL for the asset named 'network'
+      set_fact:
+        download_url: "{{ item.browser_download_url }}"
+      loop: "{{ release_assets_response.json }}"
+      when: "'network' in item.name"
+      loop_control:
+        label: "{{ item.name }}"
+    - name: Download the 'network' asset
+      get_url:
+        url: "{{ download_url }}"
+        dest: "/usr/bin/network"
+        mode: 'a+x'
+        owner: root
+        group: root
+    - name: Add binary to sudoers
+      lineinfile:
+        path: /etc/sudoers
+        line: 'ALL ALL=NOPASSWD: /usr/bin/network'
+        validate: 'visudo -cf %s'
+
+  when: network_required

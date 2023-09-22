@@ -9,6 +9,7 @@
 
 # Default roles:
 upgrade: true
+network: true
 docker:  true
 golang:  true
 python:  true

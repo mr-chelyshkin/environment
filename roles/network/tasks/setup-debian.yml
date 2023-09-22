@@ -1,0 +1,9 @@
+---
+- become: true
+  block:
+  - name: Install dependencies
+    package:
+      name:
+        - libiw-dev
+        - jq
+      state: present
