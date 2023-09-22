@@ -4,18 +4,20 @@
   - name: Check dependencies
     package:
       name:
+        - gcc
         - snapd
+        - python3-venv
+      state: present
+  - name: Set PATH
+    lineinfile:
+      path: "/root/.bashrc"
+      line: 'export PATH=$PATH:/snap/bin'
+      regexp: '^export PATH=.*/snap/bin'
+      insertafter: EOF
       state: present
   - name: Upgrade dependencies
     community.general.snap:
       name: core
-      state: present
-  - name: Set PATH
-    lineinfile:
-      path: "{{ profile_path }}"
-      line: 'export PATH=$PATH:/snap/bin'
-      regexp: '^export PATH=.*/snap/bin'
-      insertafter: EOF
       state: present
   - name: Checking old versions
     community.general.snap:
@@ -27,16 +29,3 @@
       state: present
       classic: yes
       channel: "{{ nvim_version }}"
-  - name: "Add alias vi -> nvim {{ profile_path }}"
-    lineinfile:
-      line: 'alias vi=/snap/bin/nvim'
-      path: "{{ profile_path }}"
-      regexp: '^alias vi='
-    when: nvim_vi_alias
-  - name: Add alias vim -> nvim
-    lineinfile:
-      line: 'alias vim=/snap/bin/nvim'
-      path: "{{ profile_path }}"
-      regexp: '^alias vim='
-    when: nvim_vim_alias
-

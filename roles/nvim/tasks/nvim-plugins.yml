@@ -4,31 +4,34 @@
   - name: NvChad
     git:
       repo: https://github.com/NvChad/NvChad
-      dest: "/home/{{ user }}/.config/nvim"
+      dest: "{{ user_path }}/.config/nvim"
       version: HEAD
       depth: 1
   - name: Cleanup share
     file:
-      path: "/home/{{ user }}/.local/share/"
+      path: "{{ user_path }}/.local/share/"
       state: absent
   - name: Cleanup cache
     file:
-      path: "/home/{{ user }}/.cache/nvim"
+      path: "{{ user_path }}/.cache/nvim"
       state: absent
   - name: Cleanup defaults configuration
     file:
-      path: "/home/{{ user }}/.config/nvim/lua/custom"
+      path: "{{ user_path }}/.config/nvim/lua/custom"
       state: absent
   - name: Add custom plugins
     git:
       repo: "{{ nvim_plugins_repo }}"
-      dest: "/home/{{ user }}/.config/nvim/lua/custom"
+      dest: "{{ user_path }}/.config/nvim/lua/custom"
       version: HEAD
       depth: 1
   - name: Set plugins owner
     file:
-      path: "/home/{{ user }}/.config"
-      owner: "{{ user }}"
+      path: "{{ user_path }}/.config"
+      owner: "{{ user_name }}"
       recurse: yes
 
-  when: user
+  when:
+    - ansible_os_family in ['Debian', 'RedHat', 'Darwin']
+    - user_path is defined and user_path
+    - user_name is defined and user_name

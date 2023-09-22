@@ -1,0 +1,29 @@
+---
+- become: true
+  block:
+    - name: Add alias vi -> nvim
+      lineinfile:
+        path: "{{ user_path + '/' + nvim_profile_path if '/' not in nvim_profile_path else nvim_profile_path }}"
+        line: 'alias vi=/snap/bin/nvim'
+        insertafter: EOF
+        state: present
+        regexp: '^alias vi='
+      loop: "{{ profiles }}"
+      loop_control:
+        loop_var: nvim_profile_path
+      when: nvim_vi_alias
+    - name: Add alias vim -> nvim
+      lineinfile:
+        path: "{{ user_path + '/' + nvim_vim_profile_path if '/' not in nvim_vim_profile_path else nvim_vim_profile_path }}"
+        line: 'alias vim=/snap/bin/nvim'
+        insertafter: EOF
+        state: present
+        regexp: '^alias vim='
+      loop: "{{ profiles }}"
+      loop_control:
+        loop_var: nvim_vim_profile_path
+      when: nvim_vim_alias
+
+  when:
+    - ansible_os_family in ['Debian', 'RedHat', 'Darwin']
+    - user_path is defined and user_path

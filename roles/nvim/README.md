@@ -1,5 +1,6 @@
 # Nvim.
 For installing nvim use `snapd`.  
+If you install plugins, first run take a time!  
   
 For manage nvim version (channel):
 ```yaml
@@ -15,9 +16,14 @@ channels:
   latest/beta:      ↑
   latest/edge:      v0.10.0-530+g8376e8700 2023-06-16 (2815) 23MB classic
 ```
-Specify profile [`.bashrc`, `.zshrc`, ...] for add snap and aliases:
+Specify users and profiles [`.bashrc`, `.zshrc`, `etc`, ...] for add Nvim ENVs and plugins:
 ```yaml
-profile_path: "/etc/profile"
+nvim_users: [
+  "{{ ansible_user }}"
+]
+profiles: [
+  "/etc/profile"
+]
 ```
 Add alias `vi -> nvim`:
 ```yaml
