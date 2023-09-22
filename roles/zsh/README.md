@@ -1,19 +1,16 @@
-# Install zsh
-Install zsh/oh-my-zsh
+# Zsh.
+Install zsh and oh-my-zsh plugin.
 
-## default.yml
-
-### Modifications:
-- Binary Paths:
-  - `/usr/bin/zsh`
-  - `/usr/bin/git`
-- Configuration Path:
-  - `{{ zsh_user }}/home/.oh-my-zsh`
-
-> Use default `.zshrc` profile with adding `/etc/profile` content.
-
-### Variables:
-- "zsh_user" as default: `{{ ansible_user }}`.
+Specify the users for using zsh:
+```yaml
+zsh_users: [
+  "{{ ansible_user }}",
+]
+```
+Manage `oh-my-zsh` installation:
+```yaml
+zsh_oh_my_zsh_plugin: true
+```
 
 ### Supported Platforms:
 - Debian-based Linux distributions

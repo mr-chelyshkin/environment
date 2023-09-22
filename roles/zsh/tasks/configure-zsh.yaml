@@ -1,0 +1,14 @@
+---
+- become: true
+  block:
+    - name: Change shell
+      user:
+        name: "{{ user }}"
+        shell: /usr/bin/zsh
+    - name: add .zshrc
+      become_user: "{{ user }}"
+      ansible.builtin.file:
+        path: "/home/{{ user }}/.zshrc"
+        state: touch
+
+  when: ansible_os_family in ['Debian', 'RedHat']

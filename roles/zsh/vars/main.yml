@@ -1,5 +1,11 @@
 ---
-
 zsh_role__type: "default"
 zsh_required: true
-zsh_user: "{{ ansible_user }}"
+
+# A list of users to be oh-my-zsh plugins added.
+zsh_users: [
+  "{{ ansible_user }}",
+]
+
+# Install oh-my-zsh plugin
+zsh_oh_my_zsh_plugin: true

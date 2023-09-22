@@ -1,13 +1,26 @@
 ---
-
 - block:
+  - name: Check OS
+    fail:
+      msg: "Unsupported platform: {{ ansible_os_family }}"
+    when: ansible_os_family not in ['Debian', 'RedHat']
 
-    # Routing rules ...
+  - name: Install Zsh
+    block:
+      - include_tasks: "install-linux.yml"
+        when: ansible_os_family in ['Debian', 'RedHat']
 
-    - name: Run default tasks
-      include_tasks: "default.yml"
-      when:
-        - zsh_role__type == 'default'
+      - include_tasks: "configure-zsh.yaml"
+        loop: "{{ zsh_users }}"
+        loop_control:
+          loop_var: user
+        when: ansible_os_family in ['Debian', 'RedHat', 'Darwin']
+
+  - include_tasks: oh-my-zsh.yml
+    loop: "{{ zsh_users }}"
+    loop_control:
+      loop_var: user
+    when: zsh_oh_my_zsh_plugin
 
   when:
-    - zsh_required
+  - zsh_required

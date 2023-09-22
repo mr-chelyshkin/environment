@@ -1,0 +1,10 @@
+---
+- become: true
+  block:
+    - name: Zsh
+      package:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - git
+        - zsh
