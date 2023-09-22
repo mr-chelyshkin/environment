@@ -71,6 +71,7 @@
     with_items: "{{ docker_users }}"
 
   - name: Add users to the docker group
+    become: true
     user:
       name: "{{ item }}"
       groups: docker

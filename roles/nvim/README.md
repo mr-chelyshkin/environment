@@ -17,7 +17,7 @@ channels:
 ```
 Specify profile [`.bashrc`, `.zshrc`, ...] for add snap and aliases:
 ```yaml
-nvim_profile_path: "/etc/profile"
+profile_path: "/etc/profile"
 ```
 Add alias `vi -> nvim`:
 ```yaml

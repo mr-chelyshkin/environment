@@ -9,7 +9,7 @@ nodejs_required: true
 nodejs_source_path: "/usr/local/node"
 
 # profile for export nodejs environment.
-nodejs_profile_path: "/etc/profile"
+profile_path: "/etc/profile"
 
 # source url.
 nodejs_source_url: "https://nodejs.org/dist/v{{ nodejs_version }}/node-v{{ nodejs_version }}-linux-{{ nodejs_arch_type }}.tar.xz"

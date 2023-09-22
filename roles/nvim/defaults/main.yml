@@ -1,9 +1,9 @@
 ---
 nvim_required: true
-nvim_version: "latest/stable"
+nvim_version: "stable"
 
 # Profile for export snap environment and add nvim aliases.
-nvim_profile_path: "/etc/profile"
+profile_path: "/etc/profile"
 
 # Add aliases vi -> nvim and vim -> nvim.
 nvim_vi_alias:  true

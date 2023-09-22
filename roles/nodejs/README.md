@@ -9,7 +9,7 @@ nodejs_source_path: "/usr/local/node"
 ```
 Specify profile [`.bashrc`, `.zshrc`, `etc`, ...] for add NodeEnvs:
 ```yaml
-nodejs_profile_path: "/etc/profile"
+profile_path: "/etc/profile"
 ```
 More settings in `./vars/{{ file.yml }}`
 

@@ -27,7 +27,7 @@
       cmd: "mv {{ nodejs_source_path }}/node-v{{ nodejs_version }}-{{ nodejs_os_type }}-{{ nodejs_arch_type }} {{ nodejs_source_path }}/node{{ nodejs_version }}"
   - name: Set PATH
     lineinfile:
-      path: "{{ nodejs_profile_path }}"
+      path: "{{ profile_path }}"
       line: 'export PATH=$PATH:{{ nodejs_source_path }}/node{{ nodejs_version }}/bin'
       insertafter: EOF
       state: present

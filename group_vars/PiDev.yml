@@ -12,7 +12,10 @@ upgrade: true
 network: true
 docker:  true
 golang:  true
-python:  true
+python:  false
 nodejs:  true
 nvim:    true
 zsh:     true
+
+# Internal vars
+profile_path: "/{{ ansible_env.HOME }}/.zshrc"

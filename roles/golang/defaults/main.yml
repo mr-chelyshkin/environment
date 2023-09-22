@@ -8,7 +8,7 @@ golang_required: true
 golang_source_path: "/usr/local/go"
 
 # profile for export golang environment.
-golang_profile_path: "/etc/profile"
+profile_path: "/etc/profile"
 
 # source url.
 golang_source_url: "https://go.dev/dl/go{{ golang_version }}.{{ golang_os_type }}-{{ golang_arch_type }}.tar.gz"

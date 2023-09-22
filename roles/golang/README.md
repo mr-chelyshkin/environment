@@ -9,7 +9,7 @@ golang_source_path: "/usr/local/go"
 ```
 Specify profile [`.bashrc`, `.zshrc`, `etc`, ...] for add GoEnvs:
 ```yaml
-golang_profile_path: "/etc/profile"
+profile_path: "/etc/profile"
 ```
 More settings in `./vars/{{ file.yml }}`
 
