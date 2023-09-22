@@ -1,0 +1,16 @@
+---
+- become: true
+  block:
+  - name: Check build dependencies
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - gcc
+      - make
+      - ccache
+      - zlib-devel
+      - libffi-devel
+      - openssl-devel
+
+  when: ansible_pkg_mgr == 'yum'

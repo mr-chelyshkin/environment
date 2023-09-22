@@ -1,5 +1,19 @@
 ---
-
-python_role__type: "source"
+python_role__type: "build"
 python_version: "3.11.4"
 python_required: true
+
+# profile for export python environment.
+python_profile_path: "/etc/profile"
+
+# python installation path.
+# example: python_source_path: "/usr/local/python", python_version: "3.11.4" -> result: /usr/local/python/python3.11.4
+python_source_path: "/usr/local/python"
+
+# configure options.
+python_build_options: [
+  "--enable-optimizations",
+  "--enable-optimizations",
+  "--without-tests",
+  "--without-tk",
+]

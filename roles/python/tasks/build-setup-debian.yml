@@ -1,0 +1,16 @@
+---
+- become: true
+  block:
+  - name: Check build dependencies
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - gcc
+      - make
+      - ccache
+      - zlib1g-dev
+      - libffi-dev
+      - libssl-dev
+
+  when: ansible_pkg_mgr == 'apt'

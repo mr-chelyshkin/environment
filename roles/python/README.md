@@ -1,23 +1,24 @@
-# Install python
-Install python
+# Python.
 
-## linux.source.yml
-Downloads and build from official source, <b>it's take a time</b>.
+For manage python installation:
+```yaml
+python_version:     "3.11.4"
+python_source_path: "/usr/local/python"
+```
 
-### Modifications:
-- Binary Paths:
-  - `/usr/local/bin/python{{ python_version }}`
-  - `/usr/local/bin/pip3`
-  - `/usr/bin/ccache`
-  - `/usr/bin/make`
-  - `/usr/bin/gcc`
-- Common:
-  - `zlib-devel` development files for the zlib compression library
-  - `libffi-devel` development files for the Foreign Function Interface library
-  - `openssl-devel` development files for OpenSSL
-
-### Variables:
-- "python_version" as default: `3.11.4`.
+## Build.
+Build and install python from source on local machine.  
+_(it's take a time)_
+  
+For manage configuration:
+```yaml
+python_build_options: [
+  "--enable-optimizations",
+  "--enable-optimizations",
+  "--without-tests",
+  "--without-tk",
+]
+```
 
 ### Supported Platforms:
 - Debian-based Linux distributions

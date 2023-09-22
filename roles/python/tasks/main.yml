@@ -1,42 +1,21 @@
 ---
-
 - block:
-  - name: Collect 'python' role facts
-    set_fact:
-      _is_installed: false
-      _version_current: "0"
-      _version_required: "{{ python_version }}"
-      _version_major_required: "{{ python_version | regex_replace('^([0-9]+\\.[0-9]+).*', '\\1') }}"
-  - name: Check python versions
-    command: "{{ item }} --version"
-    environment:
-      PATH: "/usr/local/bin:/usr/bin:{{ ansible_env.PATH }}"
-    register: _exec_results
-    loop:
-      - python
-      - python3
-      - "python{{ _version_major_required }}"
-    ignore_errors: true
-    changed_when: false
-  - name: Collect 'python' role facts
-    set_fact:
-      _is_installed: "{{ _version_required in item.stdout }}"
-    loop: "{{ _exec_results.results }}"
-    when: item.rc == 0
-    loop_control:
-      label: "{{ item.item }}"
+  - name: Check OS
+    fail:
+      msg: "Unsupported platform: {{ ansible_os_family }}"
+    when: ansible_os_family not in ['Debian', 'RedHat']
 
-- block:
+   # Routing rules ...
+  - name: Build and install on local
+    block:
+      - include_tasks: build-setup-debian.yml
+        when: ansible_os_family == "Debian"
+      - include_tasks: build-setup-redhat.yml
+        when: ansible_os_family == "RedHat"
 
-  # Routing rules ...
-
-  - name: Run linux.source tasks
-    include_tasks: "linux.source.yml"
-    when:
-      - python_version is defined
-      - python_role__type == 'source'
-      - ansible_os_family == "Debian" or ansible_os_family == "RedHat"
+      - name: Local build and install
+        include_tasks: "build.yml"
+    when: python_role__type == 'build'
 
   when:
-    - python_required
-    - not _is_installed
+  - python_required
