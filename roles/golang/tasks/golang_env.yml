@@ -17,7 +17,7 @@
     - name: Set PATH
       lineinfile:
         path: "{{ user_path + '/' + profile_path if '/' not in profile_path else profile_path }}"
-        line: 'export PATH=$PATH:{{ golang_source_path }}/go{{ golang_version }}/bin:{{ user_path }}/go/bin'
+        line: 'export PATH=$PATH:{{ golang_source_path }}/go{{ golang_version }}/bin:${HOME}/go/bin'
         insertafter: EOF
         state: present
         regexp: '^export PATH=.*/go.*/bin$'
