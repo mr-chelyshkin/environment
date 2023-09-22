@@ -7,9 +7,14 @@ For manage installing path:
 ```yaml
 nodejs_source_path: "/usr/local/node"
 ```
-Specify profile [`.bashrc`, `.zshrc`, `etc`, ...] for add NodeEnvs:
+Specify users and profiles [`.bashrc`, `.zshrc`, `etc`, ...] for add Node Envs:
 ```yaml
-profile_path: "/etc/profile"
+nodejs_users: [
+  "{{ ansible_user }}"
+]
+profiles: [
+  "/etc/profile"
+]
 ```
 More settings in `./vars/{{ file.yml }}`
 

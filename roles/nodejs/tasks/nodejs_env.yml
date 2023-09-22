@@ -1,0 +1,17 @@
+---
+- become: true
+  block:
+    - name: Set PATH
+      lineinfile:
+        path: "{{ user_path + '/' + profile_path if '/' not in profile_path else profile_path }}"
+        line: 'export PATH=$PATH:{{ nodejs_source_path }}/node{{ nodejs_version }}/bin:${HOME}/node_modules/.bin'
+        insertafter: EOF
+        state: present
+        regexp: '^export PATH=.*/node.*/bin$'
+      loop: "{{ profiles }}"
+      loop_control:
+        loop_var: profile_path
+
+  when:
+    - ansible_os_family in ['Debian', 'RedHat', 'Darwin']
+    - user_path is defined and user_path

@@ -8,8 +8,15 @@ nodejs_required: true
 # example: nodejs_source_path: "/usr/local/node", nodejs_version: "20.5.1" -> result: /usr/local/node/node20.5.1
 nodejs_source_path: "/usr/local/node"
 
-# profile for export nodejs environment.
-profile_path: "/etc/profile"
+# A list of users for add nodejs ENV.
+nodejs_users: [
+  "{{ ansible_user }}"
+]
+
+# profiles for export nodejs environment.
+profiles: [
+  "/etc/profile"
+]
 
 # source url.
 nodejs_source_url: "https://nodejs.org/dist/v{{ nodejs_version }}/node-v{{ nodejs_version }}-linux-{{ nodejs_arch_type }}.tar.xz"
