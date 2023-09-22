@@ -7,8 +7,15 @@ golang_required: true
 # example: golang_source_path: "/usr/local/go", golang_version: "1.21.0" -> result: /usr/local/go/go1.21.0
 golang_source_path: "/usr/local/go"
 
-# profile for export golang environment.
-profile_path: "/etc/profile"
+# A list of users for add golang ENV.
+golang_users: [
+  "{{ ansible_user }}"
+]
+
+# profiles for export golang environment.
+profiles: [
+  "/etc/profile"
+]
 
 # source url.
 golang_source_url: "https://go.dev/dl/go{{ golang_version }}.{{ golang_os_type }}-{{ golang_arch_type }}.tar.gz"

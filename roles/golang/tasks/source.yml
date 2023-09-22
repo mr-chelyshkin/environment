@@ -25,25 +25,10 @@
   - name: Rename sources
     command:
       cmd: "mv {{ golang_source_path }}/go {{ golang_source_path }}/go{{ golang_version }}"
-  - name: Set profile
-    vars:
-      go_env_vars:
-        - "export GOPATH=${HOME}/go"
-        - "export GOROOT={{ golang_source_path }}/go{{ golang_version }}"
-        - "export GOBIN=${GOPATH}/bin"
-    lineinfile:
-      path: "{{ profile_path }}"
-      regexp: "^{{ item.split('=')[0] }}"
-      line: "{{ item }}"
-    loop: "{{ go_env_vars }}"
   - name: Cleanup
     file:
       path: "/tmp/go{{ golang_version }}.tar.gz"
       state: absent
-  - name: Set PATH
-    lineinfile:
-      path: "{{ profile_path }}"
-      line: 'export PATH=$PATH:{{ golang_source_path }}/go{{ golang_version }}/bin:${HOME}/go/bin'
-      insertafter: EOF
-      state: present
-      regexp: '^export PATH=.*/go.*/bin$'
+
+  when:
+    - ansible_os_family in ['Debian', 'RedHat', 'Darwin']

@@ -7,9 +7,14 @@ For manage installing path:
 ```yaml
 golang_source_path: "/usr/local/go"
 ```
-Specify profile [`.bashrc`, `.zshrc`, `etc`, ...] for add GoEnvs:
+Specify users and profiles [`.bashrc`, `.zshrc`, `etc`, ...] for add GoEnvs:
 ```yaml
-profile_path: "/etc/profile"
+golang_users: [
+  "{{ ansible_user }}"
+]
+profiles: [
+  "/etc/profile"
+]
 ```
 More settings in `./vars/{{ file.yml }}`
 
