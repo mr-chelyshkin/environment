@@ -27,3 +27,5 @@
           name: '*'
           state: latest
     when: ansible_os_family in ['RedHat']
+
+  when: upgrade_required
