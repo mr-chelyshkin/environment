@@ -18,4 +18,7 @@ nvim:    true
 zsh:     true
 
 # Internal vars
-profile_path: "/{{ ansible_env.HOME }}/.zshrc"
+profiles: [
+  ".zshrc",
+  ".bashrc"
+]
