@@ -4,10 +4,13 @@
 - **Languages**:
     - **[golang](https://github.com/mr-chelyshkin/environment/blob/main/roles/golang/README.md)** [default: `source`]
         - [source](https://github.com/mr-chelyshkin/environment/blob/main/roles/golang/tasks/source.yml): Install goLang from official sources
+        - Support Debian/RedHat/Darwin, any arch
     - **[nodejs](https://github.com/mr-chelyshkin/environment/blob/main/roles/nodejs/README.md)** [default: `source`]
         - [source](https://github.com/mr-chelyshkin/environment/blob/main/roles/nodejs/tasks/source.yml): install NodeJS from official sources
+        - Support Debian/RedHat/Darwin, any arch
     - **[python](https://github.com/mr-chelyshkin/environment/blob/main/roles/python/README.md)** [default: `build`]
         - `build`: Build and install python on local machine.
+        - Support Debian/RedHat/Darwin, any arch
 - **CLI Tools**:
     - **[k9s]**
         - [default]
