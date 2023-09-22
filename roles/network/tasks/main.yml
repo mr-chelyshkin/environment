@@ -39,10 +39,8 @@
         mode: 'a+x'
         owner: root
         group: root
-    - name: Add binary to sudoers
-      lineinfile:
-        path: /etc/sudoers
-        line: 'ALL ALL=NOPASSWD: /usr/bin/network'
-        validate: 'visudo -cf %s'
+    - name: Grant
+      command:
+        cmd: setcap cap_net_raw,cap_net_admin=eip /usr/bin/network
 
   when: network_required

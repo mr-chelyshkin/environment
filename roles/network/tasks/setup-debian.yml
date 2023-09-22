@@ -4,6 +4,11 @@
   - name: Install dependencies
     package:
       name:
+        - libcap2-bin
         - libiw-dev
         - jq
       state: present
+  - name: Unblock wifi
+    command: rfkill unblock wifi
+    changed_when: false
+  when: ansible_os_family in ['Debian']
