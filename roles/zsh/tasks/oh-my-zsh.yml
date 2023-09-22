@@ -3,15 +3,18 @@
   block:
     - name: Cleanup
       file:
-        path: "/home/{{ user }}/.oh-my-zsh"
+        path: "{{ user_path }}/.oh-my-zsh"
         state: absent
     - name: Oh-my-zsh
       shell: "sh -c \"$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""
       args:
-        creates: "/home/{{ user }}/.oh-my-zsh"
-      become_user: "{{ user }}"
+        creates: "{{ user_path }}/.oh-my-zsh"
+      become_user: "{{ user_name }}"
       environment:
         RUNZSH: "no"
         CHSH: "no"
 
-  when: ansible_os_family in ['Debian', 'RedHat']
+  when:
+    - ansible_os_family in ['Debian', 'RedHat', 'Darwin']
+    - user_name is defined and user_name
+    - user_path is defined and user_path

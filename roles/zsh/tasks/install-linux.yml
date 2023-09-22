@@ -8,3 +8,5 @@
       loop:
         - git
         - zsh
+
+  when: ansible_os_family not in ['Debian', 'RedHat']
