@@ -29,3 +29,4 @@
       remote_src: yes
   - name: Copy
     shell: mv /tmp/k9s /usr/local/bin/k9s
+  when: k9s_required
