@@ -1,0 +1,34 @@
+---
+- block:
+  - name: Check OS
+    fail:
+      msg: "Unsupported platform: {{ ansible_os_family }}"
+    when: ansible_os_family not in ['Debian', 'RedHat', 'Darwin']
+
+  - name: Get passwd info for all users
+    getent:
+      database: passwd
+  - name: Prepare user info
+    set_fact:
+      user_path: "{{ ansible_facts.getent_passwd[item][4] }}"
+    loop: "{{ fzf_users }}"
+    when: ansible_facts.getent_passwd[item] is defined
+    register: user_facts
+
+  - name: Clone
+    git:
+      repo: https://github.com/junegunn/fzf
+      dest: "{{ user_path }}/.fzf"
+      version: HEAD
+      depth: 1
+    loop: "{{ user_facts.results }}"
+    vars:
+      user_path: "{{ item.ansible_facts.user_path }}"
+  - name: Install
+    command:
+      cmd: "{{ user_path }}/.fzf/install --all"
+    loop: "{{ user_facts.results }}"
+    vars:
+      user_path: "{{ item.ansible_facts.user_path }}"
+
+  when: fzf_required

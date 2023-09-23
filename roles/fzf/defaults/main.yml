@@ -1,0 +1,7 @@
+---
+fzf_required: true
+
+# A list of users for add fzf.
+fzf_users: [
+  "{{ ansible_user }}"
+]

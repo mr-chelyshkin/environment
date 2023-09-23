@@ -6,6 +6,7 @@
     - { role: upgrade,   when: upgrade == true }
     - { role: network,   when: network == true }
     - { role: zsh,       when: zsh == true }
+    - { role: fzf,       when: fzf == true }
 
     - { role: docker,    when: docker == true }
     - { role: golang,    when: golang == true }
