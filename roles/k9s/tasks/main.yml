@@ -1,0 +1,31 @@
+---
+- become: true
+  block:
+  - name: Get the latest release
+    uri:
+      url: "https://api.github.com/repos/derailed/k9s/releases/latest"
+      return_content: yes
+    register: latest_release_response
+  - name: Fetch assets from the latest release
+    uri:
+      url: "{{ latest_release_response.json.assets_url }}"
+      return_content: yes
+    register: release_assets_response
+  - name: Determine the download URL
+    set_fact:
+      download_url: "{{ item.browser_download_url }}"
+    loop: "{{ release_assets_response.json }}"
+    when: "item.name == 'k9s_' + ('Darwin' if ansible_os_family == 'Darwin' else 'Linux') + '_' + k9s_arch_type + '.tar.gz'"
+    loop_control:
+      label: "{{ item.name }}"
+  - name: Download
+    get_url:
+      url: "{{ download_url }}"
+      dest: "/tmp/k9s.tar.gz"
+  - name: Extract sources
+    unarchive:
+      src: "/tmp/k9s.tar.gz"
+      dest: "/tmp"
+      remote_src: yes
+  - name: Copy
+    shell: mv /tmp/k9s /usr/local/bin/k9s

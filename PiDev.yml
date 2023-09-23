@@ -12,3 +12,4 @@
     - { role: nodejs,    when: nodejs == true }
     - { role: python,    when: python == true }
     - { role: nvim,      when: nvim == true }
+    - { role: k9s,       when: k9s == true }

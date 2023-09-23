@@ -16,6 +16,7 @@ python:  false
 nodejs:  true
 nvim:    true
 zsh:     true
+k9s:     false
 
 # Internal vars
 profiles: [

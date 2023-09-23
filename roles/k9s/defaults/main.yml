@@ -1,0 +1,8 @@
+---
+k9s_required: true
+
+# Mapping system architecture to architecture identifiers.
+k9s_arch_map:
+  x86_64:  "amd64"
+  aarch64: "arm64"
+  arm64:   "arm64"
