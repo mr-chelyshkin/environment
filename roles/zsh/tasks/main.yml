@@ -17,15 +17,14 @@
     register: user_facts
 
   - block:
-      - include_tasks: "install-linux.yml"
-        when: ansible_os_family in ['Debian', 'RedHat']
+    - include_tasks: "install-linux.yml"
 
-      - include_tasks: configure-zsh.yaml
-        loop: "{{ user_facts.results }}"
-        vars:
-          user_path: "{{ item.ansible_facts.user_path }}"
-          user_name: "{{ item.ansible_facts.user_name }}"
-        when: ansible_os_family in ['Debian', 'RedHat', 'Darwin']
+    - include_tasks: configure-zsh.yaml
+      loop: "{{ user_facts.results }}"
+      vars:
+        user_path: "{{ item.ansible_facts.user_path }}"
+        user_name: "{{ item.ansible_facts.user_name }}"
+      when: ansible_os_family in ['Debian', 'RedHat', 'Darwin']
 
   - include_tasks: oh-my-zsh.yml
     loop: "{{ user_facts.results }}"
