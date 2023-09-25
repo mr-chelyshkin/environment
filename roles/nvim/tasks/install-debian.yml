@@ -25,3 +25,4 @@
       state: present
       classic: yes
       channel: "{{ nvim_version }}"
+      ignore_errors: yes
