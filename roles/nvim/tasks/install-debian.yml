@@ -15,10 +15,6 @@
       regexp: '^export PATH=.*/snap/bin'
       insertafter: EOF
       state: present
-  - name: Upgrade dependencies
-    community.general.snap:
-      name: core
-      state: present
   - name: Checking old versions
     community.general.snap:
       name: nvim
