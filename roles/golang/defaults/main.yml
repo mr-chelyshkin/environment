@@ -1,6 +1,6 @@
 ---
 golang_role__type: "gvm"
-golang_version: "1.21.0"
+golang_version: "1.21.6"
 golang_required: true
 
 # golang installation path.
