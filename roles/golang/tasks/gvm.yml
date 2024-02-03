@@ -3,29 +3,26 @@
   - name: Check OS
     fail:
       msg: "Unsupported platform: {{ ansible_os_family }}"
-    when: ansible_os_family not in ['Debian', 'RedHat']
+    when: ansible_os_family not in ['Debian']
+
   - name: Install GVM Debian-based Systems
-    become: true
-    apt:
-      name:
-        - gvm
-      state: present
-    when: ansible_facts['os_family'] == "Debian"
-  - name: Install GVM on RHEL-based Systems
-    become: true
     block:
-      - name: Enable EPEL repository
-        yum:
-          name: epel-release
-          state: present
-      - name: Install GVM
-        yum:
+      - name: Install bison
+        become: true
+        apt:
           name:
-            - gvm
+            - bison
+            - git
+            - curl
           state: present
-    when: ansible_facts['os_family'] == "RedHat"
-  - name: Install GVM on Darwin
-    community.general.homebrew:
-      name: gvm
-      state: present
-    when: ansible_facts['os_family'] == "Darwin"
+      - name: Get installer
+        ansible.builtin.get_url:
+          url: https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer
+          dest: /tmp/gvm-installer.sh
+          mode: '0755'
+      - name: Install GVM
+        command:
+          cmd: /bin/bash /tmp/gvm-installer.sh
+        args:
+          creates: "{{ ansible_env.HOME }}/.gvm/scripts/gvm"
+    when: ansible_facts['os_family'] == "Debian"

@@ -37,7 +37,7 @@
       - include_tasks: gvm.yml
       - include_tasks: gvm_go.yml
     when:
-      - ansible_os_family in ['Debian', 'RedHat', 'Darwin']
+      - ansible_os_family in ['Debian']
       - golang_role__type == 'gvm'
 
   when:
