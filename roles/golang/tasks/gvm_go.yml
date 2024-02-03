@@ -3,6 +3,10 @@
   - name: "Install go{{ golang_version }} via GVM"
     command:
       cmd: "{{ ansible_env.HOME }}/.gvm/bin/gvm install go{{ golang_version }}"
+    environment:
+      GVM_ROOT: "{{ ansible_env.HOME }}/.gvm"
   - name: "Select {{ golang_version }}"
     command:
       cmd: "{{ ansible_env.HOME }}/.gvm/bin/gvm use go{{ golang_version }} --default"
+    environment:
+      GVM_ROOT: "{{ ansible_env.HOME }}/.gvm"
