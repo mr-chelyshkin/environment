@@ -1,6 +1,6 @@
 ---
 - block:
-  - name: "Install go{{ golang_version }} via GVM"
+  - name: "Install base go for GVM"
     command:
       cmd: "{{ ansible_env.HOME }}/.gvm/bin/gvm install go1.4"
     environment:
