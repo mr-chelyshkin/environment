@@ -1,6 +1,6 @@
 ---
 python_role__type: "build"
-python_version: "3.11.4"
+python_version: "3.12.1"
 python_required: true
 
 # profile for export python environment.
