@@ -21,7 +21,7 @@ docker_users: [
 Manage Docker daemon options `/etc/docker/daemon.json`
 ```yaml
 docker_daemon_options:
-  storage-driver: "devicemapper"
+  storage-driver: "overlay2"
   log-opts:
     max-size: "20m"
 ```
