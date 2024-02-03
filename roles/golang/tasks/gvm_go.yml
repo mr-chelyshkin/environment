@@ -1,0 +1,8 @@
+---
+- block:
+  - name: "Install go{{ golang_version }} via GVM"
+    command:
+      cmd: "gvm install go{{ golang_version }}"
+  - name: "Select {{ golang_version }}"
+    command:
+      cmd: "gvm use go{{ golang_version }} --default"

@@ -1,0 +1,31 @@
+---
+- block:
+  - name: Check OS
+    fail:
+      msg: "Unsupported platform: {{ ansible_os_family }}"
+    when: ansible_os_family not in ['Debian', 'RedHat']
+  - name: Install GVM Debian-based Systems
+    become: true
+    apt:
+      name:
+        - gvm
+      state: present
+    when: ansible_facts['os_family'] == "Debian"
+  - name: Install GVM on RHEL-based Systems
+    become: true
+    block:
+      - name: Enable EPEL repository
+        yum:
+          name: epel-release
+          state: present
+      - name: Install GVM
+        yum:
+          name:
+            - gvm
+          state: present
+    when: ansible_facts['os_family'] == "RedHat"
+  - name: Install GVM on Darwin
+    community.general.homebrew:
+      name: gvm
+      state: present
+    when: ansible_facts['os_family'] == "Darwin"

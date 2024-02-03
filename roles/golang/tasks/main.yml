@@ -24,13 +24,21 @@
   - name: Install from sources
     block:
       - include_tasks: source.yml
-      - include_tasks: golang_env.yml
+      - include_tasks: source_env.yml
         loop: "{{ user_facts.results }}"
         vars:
           user_path: "{{ item.ansible_facts.user_path }}"
     when:
      - ansible_os_family in ['Debian', 'RedHat', 'Darwin']
      - golang_role__type == 'source'
+
+  - name: Install GVM
+    block:
+      - include_tasks: gvm.yml
+      - include_tasks: gvm_go.yml
+    when:
+      - ansible_os_family in ['Debian', 'RedHat', 'Darwin']
+      - golang_role__type == 'gvm'
 
   when:
   - golang_required

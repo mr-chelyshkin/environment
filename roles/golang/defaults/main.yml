@@ -1,5 +1,5 @@
 ---
-golang_role__type: "source"
+golang_role__type: "gvm"
 golang_version: "1.21.0"
 golang_required: true
 
